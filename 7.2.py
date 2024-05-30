@@ -7,11 +7,12 @@ def find_max_substring_multiplicity(word, str):
         if word[start_index:start_index + len(str)] == str:
             multiplicity += 1
             max_multiplicity = max(max_multiplicity, multiplicity)
-            start_index += len (str)
+            start_index += len(str)
         else:
             multiplicity = 0
             start_index += 1
-        return max_multiplicity
+    
+    return max_multiplicity
 
 
 word = input("Введите запрос:")
