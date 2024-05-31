@@ -1,25 +1,28 @@
-def levenshtein_distance(string1, string2):
-    len_str1 = len(string1)
-    len_str2 = len(string2)
+def min_edit_distance(s1, s2):
+    m, n = len(s1), len(s2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
 
-    matrix = [[0 for _ in range(len_str1 + 1)] for _ in range(len_str2 + 1)]
+    for i in range(m + 1):
+        dp[i][0] = i
 
-    for i in range(len_str1 + 1):
-        matrix[i][0] = i
-    for j in range(len_str2 + 1):
-        matrix[j][0] = j
+    for j in range(n + 1):
+        dp[0][j] = j
 
-    for i in range(1, len_str1 + 1):
-        for j in range(1, len_str2 + 1):
-            if string1[i - 1] == string2[j - 1]:
-                cost = 0
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1]
             else:
-                cost = 1
+                dp[i][j] = 1 + min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
 
-        matrix[i][j] = min(matrix[i-1][j] + 1, matrix[i][j-1] + 1, matrix[i-1][j - 1] + cost)
-    return matrix[len_str1][len_str2]
+    return dp[m][n]
 
-string1 = input("Ввод 1 строки:")
-string2 = input("Ввод 2 строки:")
-distance = levenshtein_distance(string1, string2)
-print(f"Min кол-во операций: {distance}")
+def get_user_input():
+    string1 = input("Ввод 1 строки:")
+    string2 = input("Ввод 2 строки:")
+    return string1, string2
+
+if __name__ == "__main__":
+    string1, string2 = get_user_input()
+    result = min_edit_distance(string1, string2)
+    print(f"Min кол-во операций: '{string1}' into '{string2}': {result}")
